@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,6 +20,25 @@ namespace FindDupFile
         public Form1()
         {
             InitializeComponent();
+
+            //var user =System.Environment.UserName;
+            //var filepath = "F:\\Resource\\图片\\工口萝莉赛高酱\\私定1万：粉白色透明制服诱惑 108图\\IMG_4873_副本.jpg";
+            //var test = new FileStream(filepath, FileMode.Open);
+            ////new FileStream("F:\\Resource\\图片\\工口萝莉赛高酱\\守望先锋\\IMG_009.jpg", FileMode.Open);
+
+
+            //FileInfo file = new FileInfo(filepath);
+            //AuthorizationRuleCollection accessRules = file.GetAccessControl().GetAccessRules(true, true,
+            //                        typeof(System.Security.Principal.SecurityIdentifier));
+
+            //var test11 = file.OpenRead();
+            //foreach (FileSystemAccessRule rule in accessRules)
+            //{
+            //    var account =rule.IdentityReference.Translate(typeof(NTAccount)) + "   ";
+            //    var right = rule.FileSystemRights;
+            //    var ctype = rule.AccessControlType;
+            //}
+
 
             this.gvDupFile.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             this.gvDupFileGroup.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -87,6 +108,7 @@ namespace FindDupFile
         private List<ScanFileInfo> ScanFiles = new List<ScanFileInfo>();
         private List<DupFileInfo> DupFileGroupList = new List<DupFileInfo>();
         private string SearchFileExt = "";
+        private int ThreadCount = 5;
 
         private void LoadConfig()
         {
@@ -174,7 +196,7 @@ namespace FindDupFile
                  x.MD5 = GetMD5HashFromFile(x.Path);
                  this.UpdateCount();
                  return x;
-             }), 5);
+             }), ThreadCount);
 
             this.UpdateCount();
 
@@ -236,7 +258,8 @@ namespace FindDupFile
                     var rList = new List<T>();
                     while (queue.TryDequeue(out T t))
                     {
-                        rList.Add(func(t));
+                        var r = func(t);
+                        rList.Add(r);
                     }
                     return rList;
                 });
@@ -258,7 +281,7 @@ namespace FindDupFile
         {
             try
             {
-                FileStream file = new FileStream(fileName, FileMode.Open);
+                FileStream file = new FileInfo(fileName).OpenRead();
                 System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
                 byte[] retVal = md5.ComputeHash(file);
                 file.Close();
@@ -272,7 +295,7 @@ namespace FindDupFile
             }
             catch (Exception ex)
             {
-                throw new Exception("GetMD5HashFromFile() fail,error:" + ex.Message);
+                return "MD5_ERROR";
             }
         }
 
