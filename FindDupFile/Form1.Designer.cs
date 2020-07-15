@@ -37,16 +37,9 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tlbAction = new System.Windows.Forms.ToolStripStatusLabel();
             this.gvDupFileGroup = new System.Windows.Forms.DataGridView();
-            this.dupCountDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pathDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Size = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.mD5DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dupFileInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.gvDupFile = new System.Windows.Forms.DataGridView();
-            this.pathDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.mD5DataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.scanFileInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.txtFileExt = new System.Windows.Forms.TextBox();
             this.btnSaveConfig = new System.Windows.Forms.Button();
@@ -55,19 +48,26 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.MenuItemOpenFolder = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemOpenFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItemDelSelFile = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemDelNotSelFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.dupCountDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pathDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.mD5DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dupFileInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.pathDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.mD5DataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.scanFileInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvDupFileGroup)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dupFileInfoBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDupFile)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.scanFileInfoBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dupFileInfoBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.scanFileInfoBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // txtPaths
@@ -141,40 +141,12 @@
             this.gvDupFileGroup.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvDupFileGroup_RowEnter);
             this.gvDupFileGroup.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.gvDupFileGroup_RowPostPaint);
             // 
-            // dupCountDataGridViewTextBoxColumn
-            // 
-            this.dupCountDataGridViewTextBoxColumn.DataPropertyName = "DupCount";
-            this.dupCountDataGridViewTextBoxColumn.HeaderText = "重复次数";
-            this.dupCountDataGridViewTextBoxColumn.Name = "dupCountDataGridViewTextBoxColumn";
-            this.dupCountDataGridViewTextBoxColumn.ReadOnly = true;
-            this.dupCountDataGridViewTextBoxColumn.Width = 80;
-            // 
-            // pathDataGridViewTextBoxColumn
-            // 
-            this.pathDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.pathDataGridViewTextBoxColumn.DataPropertyName = "Path";
-            this.pathDataGridViewTextBoxColumn.HeaderText = "路径";
-            this.pathDataGridViewTextBoxColumn.Name = "pathDataGridViewTextBoxColumn";
-            this.pathDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
             // Size
             // 
             this.Size.DataPropertyName = "Size";
             this.Size.HeaderText = "大小";
             this.Size.Name = "Size";
             this.Size.ReadOnly = true;
-            // 
-            // mD5DataGridViewTextBoxColumn
-            // 
-            this.mD5DataGridViewTextBoxColumn.DataPropertyName = "MD5";
-            this.mD5DataGridViewTextBoxColumn.HeaderText = "MD5";
-            this.mD5DataGridViewTextBoxColumn.Name = "mD5DataGridViewTextBoxColumn";
-            this.mD5DataGridViewTextBoxColumn.ReadOnly = true;
-            this.mD5DataGridViewTextBoxColumn.Width = 200;
-            // 
-            // dupFileInfoBindingSource
-            // 
-            this.dupFileInfoBindingSource.DataSource = typeof(FindDupFile.DupFileInfo);
             // 
             // gvDupFile
             // 
@@ -201,32 +173,12 @@
             this.gvDupFile.DoubleClick += new System.EventHandler(this.gvDupFile_DoubleClick);
             this.gvDupFile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gvDupFile_MouseDown);
             // 
-            // pathDataGridViewTextBoxColumn1
-            // 
-            this.pathDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.pathDataGridViewTextBoxColumn1.DataPropertyName = "Path";
-            this.pathDataGridViewTextBoxColumn1.HeaderText = "路径";
-            this.pathDataGridViewTextBoxColumn1.Name = "pathDataGridViewTextBoxColumn1";
-            this.pathDataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.DataPropertyName = "Size";
             this.dataGridViewTextBoxColumn1.HeaderText = "大小";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
-            // mD5DataGridViewTextBoxColumn1
-            // 
-            this.mD5DataGridViewTextBoxColumn1.DataPropertyName = "MD5";
-            this.mD5DataGridViewTextBoxColumn1.HeaderText = "MD5";
-            this.mD5DataGridViewTextBoxColumn1.Name = "mD5DataGridViewTextBoxColumn1";
-            this.mD5DataGridViewTextBoxColumn1.ReadOnly = true;
-            this.mD5DataGridViewTextBoxColumn1.Width = 200;
-            // 
-            // scanFileInfoBindingSource
-            // 
-            this.scanFileInfoBindingSource.DataSource = typeof(FindDupFile.ScanFileInfo);
             // 
             // txtSearch
             // 
@@ -295,36 +247,84 @@
             this.MenuItemDelSelFile,
             this.MenuItemDelNotSelFile});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 120);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(159, 98);
             // 
             // MenuItemOpenFolder
             // 
             this.MenuItemOpenFolder.Name = "MenuItemOpenFolder";
-            this.MenuItemOpenFolder.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemOpenFolder.Size = new System.Drawing.Size(158, 22);
             this.MenuItemOpenFolder.Text = "打开选择项目录";
             // 
             // MenuItemOpenFile
             // 
             this.MenuItemOpenFile.Name = "MenuItemOpenFile";
-            this.MenuItemOpenFile.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemOpenFile.Size = new System.Drawing.Size(158, 22);
             this.MenuItemOpenFile.Text = "打开选择项";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(155, 6);
             // 
             // MenuItemDelSelFile
             // 
             this.MenuItemDelSelFile.Name = "MenuItemDelSelFile";
-            this.MenuItemDelSelFile.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemDelSelFile.Size = new System.Drawing.Size(158, 22);
             this.MenuItemDelSelFile.Text = "删除选择项";
             // 
             // MenuItemDelNotSelFile
             // 
             this.MenuItemDelNotSelFile.Name = "MenuItemDelNotSelFile";
-            this.MenuItemDelNotSelFile.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemDelNotSelFile.Size = new System.Drawing.Size(158, 22);
             this.MenuItemDelNotSelFile.Text = "删除未选择项";
             // 
-            // toolStripSeparator1
+            // dupCountDataGridViewTextBoxColumn
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.dupCountDataGridViewTextBoxColumn.DataPropertyName = "DupCount";
+            this.dupCountDataGridViewTextBoxColumn.HeaderText = "重复次数";
+            this.dupCountDataGridViewTextBoxColumn.Name = "dupCountDataGridViewTextBoxColumn";
+            this.dupCountDataGridViewTextBoxColumn.ReadOnly = true;
+            this.dupCountDataGridViewTextBoxColumn.Width = 80;
+            // 
+            // pathDataGridViewTextBoxColumn
+            // 
+            this.pathDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.pathDataGridViewTextBoxColumn.DataPropertyName = "Path";
+            this.pathDataGridViewTextBoxColumn.HeaderText = "路径";
+            this.pathDataGridViewTextBoxColumn.Name = "pathDataGridViewTextBoxColumn";
+            this.pathDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // mD5DataGridViewTextBoxColumn
+            // 
+            this.mD5DataGridViewTextBoxColumn.DataPropertyName = "MD5";
+            this.mD5DataGridViewTextBoxColumn.HeaderText = "MD5";
+            this.mD5DataGridViewTextBoxColumn.Name = "mD5DataGridViewTextBoxColumn";
+            this.mD5DataGridViewTextBoxColumn.ReadOnly = true;
+            this.mD5DataGridViewTextBoxColumn.Width = 200;
+            // 
+            // dupFileInfoBindingSource
+            // 
+            this.dupFileInfoBindingSource.DataSource = typeof(FindDupFile.DupFileInfo);
+            // 
+            // pathDataGridViewTextBoxColumn1
+            // 
+            this.pathDataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.pathDataGridViewTextBoxColumn1.DataPropertyName = "Path";
+            this.pathDataGridViewTextBoxColumn1.HeaderText = "路径";
+            this.pathDataGridViewTextBoxColumn1.Name = "pathDataGridViewTextBoxColumn1";
+            this.pathDataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // mD5DataGridViewTextBoxColumn1
+            // 
+            this.mD5DataGridViewTextBoxColumn1.DataPropertyName = "MD5";
+            this.mD5DataGridViewTextBoxColumn1.HeaderText = "MD5";
+            this.mD5DataGridViewTextBoxColumn1.Name = "mD5DataGridViewTextBoxColumn1";
+            this.mD5DataGridViewTextBoxColumn1.ReadOnly = true;
+            this.mD5DataGridViewTextBoxColumn1.Width = 200;
+            // 
+            // scanFileInfoBindingSource
+            // 
+            this.scanFileInfoBindingSource.DataSource = typeof(FindDupFile.ScanFileInfo);
             // 
             // Form1
             // 
@@ -346,14 +346,14 @@
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvDupFileGroup)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dupFileInfoBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDupFile)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.scanFileInfoBindingSource)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dupFileInfoBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.scanFileInfoBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

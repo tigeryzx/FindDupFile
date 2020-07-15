@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FindDupFile.Store;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,33 +22,15 @@ namespace FindDupFile
         {
             InitializeComponent();
 
-            //var user =System.Environment.UserName;
-            //var filepath = "F:\\Resource\\图片\\工口萝莉赛高酱\\私定1万：粉白色透明制服诱惑 108图\\IMG_4873_副本.jpg";
-            //var test = new FileStream(filepath, FileMode.Open);
-            ////new FileStream("F:\\Resource\\图片\\工口萝莉赛高酱\\守望先锋\\IMG_009.jpg", FileMode.Open);
-
-
-            //FileInfo file = new FileInfo(filepath);
-            //AuthorizationRuleCollection accessRules = file.GetAccessControl().GetAccessRules(true, true,
-            //                        typeof(System.Security.Principal.SecurityIdentifier));
-
-            //var test11 = file.OpenRead();
-            //foreach (FileSystemAccessRule rule in accessRules)
-            //{
-            //    var account =rule.IdentityReference.Translate(typeof(NTAccount)) + "   ";
-            //    var right = rule.FileSystemRights;
-            //    var ctype = rule.AccessControlType;
-            //}
-
-
             this.gvDupFile.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             this.gvDupFileGroup.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
 
             this.MenuItemOpenFolder.Click += MenuItemOpenFolder_Click;
             this.MenuItemOpenFile.Click += MenuItemOpenFile_Click;
             this.MenuItemDelSelFile.Click += MenuItemDelSelFile_Click;
             this.MenuItemDelNotSelFile.Click += MenuItemDelNotSelFile_Click;
+
+            this.storeService = new StoreService();
 
             this.LoadConfig();
         }
@@ -108,7 +91,8 @@ namespace FindDupFile
         private List<ScanFileInfo> ScanFiles = new List<ScanFileInfo>();
         private List<DupFileInfo> DupFileGroupList = new List<DupFileInfo>();
         private string SearchFileExt = "";
-        private int ThreadCount = 5;
+        private int ThreadCount = 2;
+        private StoreService storeService;
 
         private void LoadConfig()
         {
@@ -150,6 +134,9 @@ namespace FindDupFile
             this.DupFileGroupList.Clear();
             this.ScanFiles.Clear();
             this.ScanPaths.Clear();
+
+            this.gvDupFileGroup.DataSource = null;
+            this.gvDupFile.DataSource = null;
 
             this.SearchFileExt = this.txtFileExt.Text;
             this.ScanPaths.AddRange(this.txtPaths.Text.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries));
@@ -193,25 +180,29 @@ namespace FindDupFile
 
             this.RunTask(this.ScanFiles, new Func<ScanFileInfo, ScanFileInfo>(x =>
              {
-                 x.MD5 = GetMD5HashFromFile(x.Path);
+                 x.MD5 = this.storeService.GetFileMD5(x.Path);
                  this.UpdateCount();
                  return x;
              }), ThreadCount);
 
             this.UpdateCount();
 
+            this.storeService.AddFileInfoIfNotExists(this.ScanFiles);
+
             this.Invoke(new Action(() =>
             {
-
                 var dupKeys = this
-                    .ScanFiles.GroupBy(x => x.MD5).Where(x => x.Count() > 1)
+                    .ScanFiles.GroupBy(x => x.MD5)
+                    .Where(x => x.Count() > 1)
                     .Select(x => x.Key);
 
                 List<DupFileInfo> dupFileList = new List<DupFileInfo>();
 
                 foreach (var dk in dupKeys)
                 {
-                    var dki = this.ScanFiles.Where(x => x.MD5 == dk).ToList();
+                    var dki = this.ScanFiles
+                    .Where(x => x.MD5 == dk).ToList();
+
                     dupFileList.Add(new DupFileInfo()
                     {
                         DupCount = dki.Count(),
@@ -270,33 +261,6 @@ namespace FindDupFile
                 result.AddRange(tasks[i].Result);
             }
             return result;
-        }
-
-        /// <summary>
-        /// 获取文件MD5值
-        /// </summary>
-        /// <param name="fileName">文件绝对路径</param>
-        /// <returns>MD5值</returns>
-        public static string GetMD5HashFromFile(string fileName)
-        {
-            try
-            {
-                FileStream file = new FileInfo(fileName).OpenRead();
-                System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
-                byte[] retVal = md5.ComputeHash(file);
-                file.Close();
-
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < retVal.Length; i++)
-                {
-                    sb.Append(retVal[i].ToString("x2"));
-                }
-                return sb.ToString();
-            }
-            catch (Exception ex)
-            {
-                return "MD5_ERROR";
-            }
         }
 
         private void gvDupFileGroup_RowEnter(object sender, DataGridViewCellEventArgs e)
@@ -460,5 +424,6 @@ namespace FindDupFile
                 File.Delete(item.Path);
             }
         }
+
     }
 }
