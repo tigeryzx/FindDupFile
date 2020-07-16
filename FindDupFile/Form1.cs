@@ -91,28 +91,41 @@ namespace FindDupFile
         private List<ScanFileInfo> ScanFiles = new List<ScanFileInfo>();
         private List<DupFileInfo> DupFileGroupList = new List<DupFileInfo>();
         private string SearchFileExt = "";
-        private int ThreadCount = 2;
+        private int ThreadCount = 1;
         private StoreService storeService;
+        private bool IsInitConfig = true;
 
         private void LoadConfig()
         {
+            this.IsInitConfig = true;
+
+            var winWidth =  Convert.ToInt32(AppSettings.GetValue("winWidth"));
+            var winHeight = Convert.ToInt32(AppSettings.GetValue("winHeight"));
+            if (winWidth > 0 && winWidth > this.Width)
+                this.Width = winWidth;
+
+            if (winHeight > 0 && winHeight > this.Height)
+                this.Height = winHeight;
+
             this.txtFileExt.Text = AppSettings.GetValue("searchFileExt");
             this.txtPaths.Text = AppSettings.GetValue("searchPaths");
 
             var resultWindowHeightyPercent = Convert.ToDouble(AppSettings.GetValue("resultWindowHeightyPercent"));
             this.splitContainer1.SplitterDistance = Convert.ToInt32(this.splitContainer1.Height * resultWindowHeightyPercent);
 
+            var privewWindowHeightyPercent = Convert.ToDouble(AppSettings.GetValue("privewWindowHeightyPercent"));
+            this.splitContainer2.SplitterDistance = Convert.ToInt32(this.splitContainer2.Width * privewWindowHeightyPercent);
+
             this.SearchFileExt = this.txtFileExt.Text;
             this.ScanPaths.AddRange(this.txtPaths.Text.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries));
+
+            this.IsInitConfig = false;
         }
 
         private void SaveConfig()
         {
             AppSettings.SetValue("searchFileExt", this.txtFileExt.Text);
             AppSettings.SetValue("searchPaths", this.txtPaths.Text);
-
-            var resultWindowHeightyPercent = Convert.ToDouble(this.splitContainer1.SplitterDistance) / Convert.ToDouble(this.splitContainer1.Height);
-            AppSettings.SetValue("resultWindowHeightyPercent", resultWindowHeightyPercent.ToString());
         }
 
         private void btnAddPath_Click(object sender, EventArgs e)
@@ -131,6 +144,8 @@ namespace FindDupFile
 
         private void btnCheck_Click(object sender, EventArgs e)
         {
+            this.SwitchUIEnabled(false);
+
             this.DupFileGroupList.Clear();
             this.ScanFiles.Clear();
             this.ScanPaths.Clear();
@@ -187,8 +202,6 @@ namespace FindDupFile
 
             this.UpdateCount();
 
-            this.storeService.AddFileInfoIfNotExists(this.ScanFiles);
-
             this.Invoke(new Action(() =>
             {
                 var dupKeys = this
@@ -212,6 +225,16 @@ namespace FindDupFile
                 }
                 this.DupFileGroupList = dupFileList;
                 this.gvDupFileGroup.DataSource = this.DupFileGroupList;
+            }));
+
+            this.UpdateAction("保存记录中....");
+            this.storeService.AddFileInfoIfNotExists(this.ScanFiles);
+            this.storeService.ClearCache();
+            this.UpdateAction("就绪");
+
+            this.Invoke(new Action(()=>
+            {
+                this.SwitchUIEnabled(true);
             }));
         }
 
@@ -425,5 +448,91 @@ namespace FindDupFile
             }
         }
 
+        string[] imageFileExt = new string[] { ".jpg", ".jpeg", ".bmp", ".png", ".gif" };
+
+        private void PerviewContent(ScanFileInfo scanFileInfo)
+        {
+            if ((string)this.pnPerview.Tag == scanFileInfo.Path)
+                return;
+
+            this.pnPerview.Controls.Clear();
+
+            if (!File.Exists(scanFileInfo.Path))
+                return;
+
+            var ext = Path.GetExtension(scanFileInfo.Path);
+            if (string.IsNullOrEmpty(ext))
+                return;
+
+            ext = ext.ToLower();
+
+            if (imageFileExt.Contains(ext))
+            {
+                var containtWidth = this.pnPerview.Width;
+                var containtHeight = this.pnPerview.Height;
+
+                using (var image = Image.FromFile(scanFileInfo.Path))
+                {
+                    var smallImgWidth = image.Width;
+                    var smallImgHeight = image.Height;
+
+                    if (image.Width <= containtWidth)
+                        smallImgWidth = image.Width;
+                    else if (image.Width > containtWidth)
+                        smallImgWidth = containtWidth;
+
+                    smallImgHeight = Convert.ToInt32((Convert.ToDouble(smallImgWidth) / Convert.ToDouble(image.Width)) * Convert.ToDouble(image.Height));
+
+                    PictureBox pictureBox = new PictureBox();
+                    pictureBox.Dock = DockStyle.Fill;
+                    pictureBox.Image = Image.FromFile(scanFileInfo.Path).GetThumbnailImage(smallImgWidth, smallImgHeight, null, IntPtr.Zero);
+                    pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
+                    this.pnPerview.Controls.Add(pictureBox);
+                    this.pnPerview.Tag = scanFileInfo.Path;
+                }
+            }
+        }
+
+        private void gvDupFile_SelectionChanged(object sender, EventArgs e)
+        {
+            if (this.gvDupFile.SelectedRows == null || this.gvDupFile.SelectedRows.Count <= 0)
+                return;
+
+            var row = this.gvDupFile.SelectedRows[0];
+            var scanFileInfo = row.DataBoundItem as ScanFileInfo;
+            if (scanFileInfo != null)
+                this.PerviewContent(scanFileInfo);
+        }
+
+        private void Form1_ResizeEnd(object sender, EventArgs e)
+        {
+            AppSettings.SetValue("winWidth", this.Width.ToString());
+            AppSettings.SetValue("winHeight", this.Height.ToString());
+        }
+
+        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+            if (this.IsInitConfig)
+                return;
+
+            var resultWindowHeightyPercent = Convert.ToDouble(this.splitContainer1.SplitterDistance) / Convert.ToDouble(this.splitContainer1.Height);
+            AppSettings.SetValue("resultWindowHeightyPercent", resultWindowHeightyPercent.ToString());
+        }
+
+        private void splitContainer2_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+            if (this.IsInitConfig)
+                return;
+
+            var privewWindowHeightyPercent = Convert.ToDouble(this.splitContainer2.SplitterDistance) / Convert.ToDouble(this.splitContainer2.Width);
+            AppSettings.SetValue("privewWindowHeightyPercent", privewWindowHeightyPercent.ToString());
+        }
+
+        private void SwitchUIEnabled(bool enabled)
+        {
+            this.btnCheck.Enabled = enabled;
+            this.txtFileExt.Enabled = enabled;
+            this.txtPaths.Enabled = enabled;
+        }
     }
 }

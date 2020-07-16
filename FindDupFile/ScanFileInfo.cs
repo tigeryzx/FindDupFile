@@ -19,11 +19,19 @@ namespace FindDupFile
         {
             get
             {
-                if (string.IsNullOrEmpty(this._Size) && File.Exists(this.Path))
-                    this._Size = FileHelper.HumanReadableFilesize(this.Path);
-                else
-                    this._Size = "NE";
+                if (File.Exists(this.Path))
+                {
+                    if (string.IsNullOrEmpty(this._Size))
+                        this._Size = FileHelper.HumanReadableFilesize(this.Path);
+                }
+                else if(string.IsNullOrEmpty(this._Size))
+                    this.Size = "NE";
+                
                 return this._Size;
+            }
+            set
+            {
+                this._Size = value;
             }
         }
 

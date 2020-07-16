@@ -51,6 +51,8 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuItemDelSelFile = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuItemDelNotSelFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.pnPerview = new System.Windows.Forms.Panel();
             this.dupCountDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pathDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.mD5DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -66,6 +68,10 @@
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dupFileInfoBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.scanFileInfoBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -77,7 +83,7 @@
             this.txtPaths.Location = new System.Drawing.Point(12, 12);
             this.txtPaths.Multiline = true;
             this.txtPaths.Name = "txtPaths";
-            this.txtPaths.Size = new System.Drawing.Size(848, 107);
+            this.txtPaths.Size = new System.Drawing.Size(933, 107);
             this.txtPaths.TabIndex = 0;
             // 
             // btnAddPath
@@ -106,7 +112,7 @@
             this.tlbAction});
             this.statusStrip1.Location = new System.Drawing.Point(0, 520);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(872, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(957, 22);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -136,7 +142,7 @@
             this.gvDupFileGroup.Name = "gvDupFileGroup";
             this.gvDupFileGroup.ReadOnly = true;
             this.gvDupFileGroup.RowTemplate.Height = 24;
-            this.gvDupFileGroup.Size = new System.Drawing.Size(842, 186);
+            this.gvDupFileGroup.Size = new System.Drawing.Size(701, 179);
             this.gvDupFileGroup.TabIndex = 4;
             this.gvDupFileGroup.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvDupFileGroup_RowEnter);
             this.gvDupFileGroup.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.gvDupFileGroup_RowPostPaint);
@@ -167,9 +173,10 @@
             this.gvDupFile.Name = "gvDupFile";
             this.gvDupFile.ReadOnly = true;
             this.gvDupFile.RowTemplate.Height = 24;
-            this.gvDupFile.Size = new System.Drawing.Size(842, 161);
+            this.gvDupFile.Size = new System.Drawing.Size(701, 156);
             this.gvDupFile.TabIndex = 5;
             this.gvDupFile.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.gvDupFileGroup_RowPostPaint);
+            this.gvDupFile.SelectionChanged += new System.EventHandler(this.gvDupFile_SelectionChanged);
             this.gvDupFile.DoubleClick += new System.EventHandler(this.gvDupFile_DoubleClick);
             this.gvDupFile.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gvDupFile_MouseDown);
             // 
@@ -183,7 +190,7 @@
             // txtSearch
             // 
             this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSearch.Location = new System.Drawing.Point(698, 125);
+            this.txtSearch.Location = new System.Drawing.Point(783, 125);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(162, 22);
             this.txtSearch.TabIndex = 6;
@@ -195,7 +202,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFileExt.Location = new System.Drawing.Point(336, 125);
             this.txtFileExt.Name = "txtFileExt";
-            this.txtFileExt.Size = new System.Drawing.Size(356, 22);
+            this.txtFileExt.Size = new System.Drawing.Size(441, 22);
             this.txtFileExt.TabIndex = 7;
             // 
             // btnSaveConfig
@@ -223,7 +230,8 @@
             this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(12, 154);
+            this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -234,9 +242,10 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.gvDupFile);
-            this.splitContainer1.Size = new System.Drawing.Size(848, 363);
-            this.splitContainer1.SplitterDistance = 192;
+            this.splitContainer1.Size = new System.Drawing.Size(709, 355);
+            this.splitContainer1.SplitterDistance = 187;
             this.splitContainer1.TabIndex = 10;
+            this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
             // 
             // contextMenuStrip1
             // 
@@ -277,6 +286,35 @@
             this.MenuItemDelNotSelFile.Name = "MenuItemDelNotSelFile";
             this.MenuItemDelNotSelFile.Size = new System.Drawing.Size(158, 22);
             this.MenuItemDelNotSelFile.Text = "删除未选择项";
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.splitContainer2.Location = new System.Drawing.Point(12, 154);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.splitContainer1);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.pnPerview);
+            this.splitContainer2.Size = new System.Drawing.Size(933, 363);
+            this.splitContainer2.SplitterDistance = 717;
+            this.splitContainer2.TabIndex = 11;
+            this.splitContainer2.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer2_SplitterMoved);
+            // 
+            // pnPerview
+            // 
+            this.pnPerview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnPerview.Location = new System.Drawing.Point(0, 0);
+            this.pnPerview.Name = "pnPerview";
+            this.pnPerview.Size = new System.Drawing.Size(210, 361);
+            this.pnPerview.TabIndex = 0;
             // 
             // dupCountDataGridViewTextBoxColumn
             // 
@@ -330,8 +368,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(872, 542);
-            this.Controls.Add(this.splitContainer1);
+            this.ClientSize = new System.Drawing.Size(957, 542);
+            this.Controls.Add(this.splitContainer2);
             this.Controls.Add(this.btnReadConfig);
             this.Controls.Add(this.btnSaveConfig);
             this.Controls.Add(this.txtFileExt);
@@ -343,6 +381,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "重复文件查找";
+            this.ResizeEnd += new System.EventHandler(this.Form1_ResizeEnd);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvDupFileGroup)).EndInit();
@@ -352,6 +391,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dupFileInfoBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.scanFileInfoBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -389,6 +432,8 @@
         private System.Windows.Forms.ToolStripMenuItem MenuItemDelSelFile;
         private System.Windows.Forms.ToolStripMenuItem MenuItemDelNotSelFile;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.Panel pnPerview;
     }
 }
 
