@@ -24,7 +24,7 @@ namespace FindDupFile
                     if (string.IsNullOrEmpty(this._Size))
                         this._Size = FileHelper.HumanReadableFilesize(this.Path);
                 }
-                else if(string.IsNullOrEmpty(this._Size))
+                else
                     this.Size = "NE";
                 
                 return this._Size;

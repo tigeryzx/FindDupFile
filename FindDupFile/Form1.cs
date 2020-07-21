@@ -449,13 +449,15 @@ namespace FindDupFile
         }
 
         string[] imageFileExt = new string[] { ".jpg", ".jpeg", ".bmp", ".png", ".gif" };
+        PictureBox pictureBox = new PictureBox();
 
         private void PerviewContent(ScanFileInfo scanFileInfo)
         {
             if ((string)this.pnPerview.Tag == scanFileInfo.Path)
                 return;
 
-            this.pnPerview.Controls.Clear();
+            //this.pnPerview.Controls.Clear();
+            pictureBox.Image = null;
 
             if (!File.Exists(scanFileInfo.Path))
                 return;
@@ -483,7 +485,6 @@ namespace FindDupFile
 
                     smallImgHeight = Convert.ToInt32((Convert.ToDouble(smallImgWidth) / Convert.ToDouble(image.Width)) * Convert.ToDouble(image.Height));
 
-                    PictureBox pictureBox = new PictureBox();
                     pictureBox.Dock = DockStyle.Fill;
                     pictureBox.Image = Image.FromFile(scanFileInfo.Path).GetThumbnailImage(smallImgWidth, smallImgHeight, null, IntPtr.Zero);
                     pictureBox.SizeMode = PictureBoxSizeMode.CenterImage;
